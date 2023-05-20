@@ -6,3 +6,6 @@
 - Vue3
 - Vant4组件库
 - Vite打包工具
+
+## License
+MIT
