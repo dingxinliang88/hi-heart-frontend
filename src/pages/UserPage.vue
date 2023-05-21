@@ -44,31 +44,103 @@
     @click="toEdit('email', user.email, '邮箱')"
   />
   <van-cell title="注册时间" :value="parseDate(user.createTime)" />
+  <van-cell title="更多操作" @click="show = true" is-link icon="setting-o" />
+
+  <div>
+    <van-action-sheet
+      v-model:show="show"
+      :actions="actions"
+      cancel-text="取消"
+      close-on-click-action
+      @select="onSelect"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import myAxios from "../plugins/myAxios";
+import { ref } from "vue";
 
-const user = {
-  id: 5,
-  userName: "Admin",
-  userAccount: "admin",
-  userAvatar:
-    "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
-  userProfile: "我是管理员，特殊账号",
-  gender: 1,
-  phone: "741741741",
-  email: "741741741@741.com",
-  userRole: 1,
+import type { UserVO } from "../models/user";
+import { showConfirmDialog, showFailToast, showSuccessToast } from "vant";
+import { getLoginUser } from "../service/user";
+
+const user = ref<UserVO>({
+  id: 0,
+  userName: "",
+  userAccount: "",
+  gender: 0,
+  phone: "",
+  email: "",
+  userRole: 0,
+  tags: [],
   createTime: new Date(),
-};
+});
+
+onMounted(async () => {
+  const res = await getLoginUser();
+  if (!res) {
+    showFailToast("请先登录！");
+    
+  }
+  user.value = res;
+});
 
 const router = useRouter();
 
+const show = ref(false);
+const actions = [
+  {
+    name: "注销账号",
+    color: "#ee0a24",
+    subname: "此操作将会删除账号，谨慎操作",
+  },
+  { name: "退出登录" },
+];
+
+const onSelect = (index) => {
+  if (index.name === "退出登录") {
+    showConfirmDialog({
+      title: "确认退出？",
+    })
+      .then(async () => {
+        // on confirm
+        const res = await myAxios.post("/user/logout");
+        if (res.code === 0) {
+          showSuccessToast("退出成功");
+          router.push("/login");
+        }
+      })
+      .catch(() => {
+        // on cancel
+      });
+  } else if (index.name === "注销账号") {
+    showConfirmDialog({
+      title: "确认注销？此操作不可逆！",
+    })
+      .then(() => {
+        // on confirm
+        showFailToast("暂时不给！");
+      })
+      .catch(() => {
+        // on cancel
+      });
+  }
+};
+
+/**
+ * 前往修改
+ * @param editKey edit key
+ * @param curVal 当前值
+ * @param editName 修改的字段名
+ */
 const toEdit = (editKey: string, curVal: any, editName: string) => {
   router.push({
     path: "/user/edit",
     query: {
+      id: user.value.id,
       editKey,
       curVal,
       editName,
@@ -81,10 +153,8 @@ const toEdit = (editKey: string, curVal: any, editName: string) => {
  * @param date 日期
  */
 const parseDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  const dateObj = new Date(date);
+  return dateObj.toLocaleString();
 };
 </script>
 
