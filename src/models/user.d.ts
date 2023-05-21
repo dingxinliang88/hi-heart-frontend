@@ -6,6 +6,7 @@ export type UserVO = {
   userName: string;
   userAccount: string;
   userAvatar?: string;
+  userProfile?: string;
   gender: number;
   phone: string;
   email: string;

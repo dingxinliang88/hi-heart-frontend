@@ -23,6 +23,13 @@
     @click="toEdit('gender', user.gender, '性别')"
   />
   <van-cell
+    title="简介"
+    is-link
+    to="/user/edit"
+    :value="user.userProfile"
+    @click="toEdit('userProfile', user.userProfile, '简介')"
+  />
+  <van-cell
     title="电话"
     is-link
     to="/user/edit"
@@ -48,6 +55,7 @@ const user = {
   userAccount: "admin",
   userAvatar:
     "https://thumbs.dreamstime.com/b/admin-sign-laptop-icon-stock-vector-166205404.jpg",
+  userProfile: "我是管理员，特殊账号",
   gender: 1,
   phone: "741741741",
   email: "741741741@741.com",

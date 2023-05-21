@@ -37,12 +37,17 @@
     v-model:main-active-index="activeIndex"
     :items="tagList"
   />
+
+  <div style="padding: 16px">
+    <van-button block type="primary" @click="doSearchResult">搜索</van-button>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import myAxios from "../plugins/myAxios";
-import { onMounted } from "vue";
+import { useRouter } from "vue-router";
+// import myAxios from "../plugins/myAxios";
+// import { onMounted } from "vue";
 
 /**
  * 搜索过滤标签
@@ -74,46 +79,82 @@ const doClose = (tag: string) => {
   });
 };
 
+const router = useRouter();
+
+const doSearchResult = () => {
+  router.push({
+    path: "/user/list",
+    query: {
+      tags: activeIds.value,
+    },
+  });
+};
+
 const searchText = ref("");
 
 const activeIds = ref([]);
 const activeIndex = ref(0);
 
-let tagVOListFromBackend = [
+// let tagVOListFromBackend = [
+//   {
+//     parentTagName: "",
+//     childTagNameList: [],
+//   },
+// ];
+
+// let originTagList: any[] = [];
+
+// /**
+//  * 加载标签列表
+//  */
+// const loadTagList = async () => {
+//   const res = await myAxios.get("/tag/tag_list");
+//   tagVOListFromBackend = res.data;
+//   console.log(tagVOListFromBackend);
+
+//   originTagList = tagVOListFromBackend.map((item) => {
+//     const parentTag = item.parentTagName;
+//     const childrenTags = item.childTagNameList.slice(1).map((child, _) => ({
+//       text: child,
+//       id: child,
+//     }));
+//     return {
+//       text: parentTag,
+//       children: childrenTags,
+//     };
+//   });
+
+//   tagList.value = originTagList;
+// };
+
+// onMounted(async () => {
+//   loadTagList();
+// });
+
+const originTagList = [
   {
-    parentTagName: "",
-    childTagNameList: [],
+    text: "学习目标",
+    children: [
+      { text: "Java", id: "Java" },
+      { text: "C++", id: "C++" },
+      { text: "Python", id: "Python" },
+    ],
+  },
+  {
+    text: "目标",
+    children: [
+      { text: "考研", id: "考研" },
+      { text: "工作", id: "工作" },
+    ],
+  },
+  {
+    text: "个人状态",
+    children: [
+      { text: "活泼", id: "活泼" },
+      { text: "悠闲自在", id: "悠闲自在" },
+    ],
   },
 ];
-
-let originTagList: any[] = [];
-
-/**
- * 加载标签列表
- */
-const loadTagList = async () => {
-  const res = await myAxios.get("/tag/tag_list");
-  tagVOListFromBackend = res.data;
-  console.log(tagVOListFromBackend);
-
-  originTagList = tagVOListFromBackend.map((item) => {
-    const parentTag = item.parentTagName;
-    const childrenTags = item.childTagNameList.slice(1).map((child, _) => ({
-      text: child,
-      id: child,
-    }));
-    return {
-      text: parentTag,
-      children: childrenTags,
-    };
-  });
-
-  tagList.value = originTagList;
-};
-
-onMounted(async () => {
-  loadTagList();
-});
 
 let tagList = ref(originTagList);
 </script>
