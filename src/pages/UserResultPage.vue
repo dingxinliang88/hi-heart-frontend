@@ -1,27 +1,6 @@
 <template>
   <van-empty v-if="!userList.length" description="查询无果" />
-  <template v-for="user in userList">
-    <van-card
-      :desc="user.userProfile"
-      :title="user.userName"
-      :thumb="user.userAvatar"
-    >
-      <template #tags>
-        <van-tag
-          plain
-          type="success"
-          v-for="tag in user.tags"
-          style="margin-right: 8px; margin-top: 8px"
-        >
-          {{ tag }}
-        </van-tag>
-      </template>
-      <template #footer>
-        <van-button round size="small" type="danger">举报</van-button>
-        <van-button round size="small" type="primary">联系我</van-button>
-      </template>
-    </van-card>
-  </template>
+  <user-card-list :user-list="userList" />
 </template>
 
 <script setup lang="ts">
@@ -31,6 +10,7 @@ import myAxios from "../plugins/myAxios";
 import { useRoute } from "vue-router";
 import qs from "qs";
 import { UserVO } from "../models/user";
+import UserCardList from "../components/UserCardList.vue";
 
 // const mockUser = ref({
 //   id: 5,
