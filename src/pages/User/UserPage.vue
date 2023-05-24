@@ -44,7 +44,7 @@
     @click="toEdit('email', user.email, '邮箱')"
   />
   <van-cell title="注册时间" :value="parseDate(user.createTime)" />
-  <van-cell title="更多操作" @click="show = true" is-link icon="setting-o" />
+  <van-cell title="更多操作" @click="show = true" is-link icon="more-o" />
 
   <div>
     <van-action-sheet
@@ -66,6 +66,7 @@ import { ref } from "vue";
 import type { UserVO } from "../../models/user";
 import { showConfirmDialog, showFailToast, showSuccessToast } from "vant";
 import { getLoginUser } from "../../service/user";
+import { parseDate } from "../../service/date";
 
 const user = ref<UserVO>({
   id: 0,
@@ -83,7 +84,6 @@ onMounted(async () => {
   const res = await getLoginUser();
   if (!res) {
     showFailToast("请先登录！");
-    
   }
   user.value = res;
 });
@@ -100,7 +100,7 @@ const actions = [
   { name: "退出登录" },
 ];
 
-const onSelect = (index) => {
+const onSelect = (index: any) => {
   if (index.name === "退出登录") {
     showConfirmDialog({
       title: "确认退出？",
@@ -146,15 +146,6 @@ const toEdit = (editKey: string, curVal: any, editName: string) => {
       editName,
     },
   });
-};
-
-/**
- * 转换日期显示
- * @param date 日期
- */
-const parseDate = (date: Date) => {
-  const dateObj = new Date(date);
-  return dateObj.toLocaleString();
 };
 </script>
 

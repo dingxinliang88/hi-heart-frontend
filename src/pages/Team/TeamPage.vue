@@ -1,18 +1,33 @@
 <template>
-  Team
   <div id="teampage">
-    <van-button round icon="plus" type="primary" @click="addTeam" />
+    <team-card-list :team-list="teamList" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+import { TeamType } from "../../models/team";
+import { onMounted, ref } from "vue";
+import myAxios from "../../plugins/myAxios";
+import TeamCardList from "../../components/TeamCardList.vue";
 
-const router = useRouter();
 
-const addTeam = () => {
-  router.push("/team/add");
-};
+const teamList = ref([] as TeamType[]);
+
+onMounted(async () => {
+  const res = await myAxios.get("/team/list", {
+    params: {
+      pageNum: 1,
+      pageSize: 10,
+    },
+  });
+  if (res.code === 0 && res.data) {
+    teamList.value = res.data.records;
+  }
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+#teampage {
+  padding-bottom: 50px;
+}
+</style>
