@@ -6,11 +6,11 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { ref } from "vue";
-import myAxios from "../plugins/myAxios";
+import myAxios from "../../plugins/myAxios";
 import { useRoute } from "vue-router";
 import qs from "qs";
-import { UserVO } from "../models/user";
-import UserCardList from "../components/UserCardList.vue";
+import { UserVO } from "../../models/user";
+import UserCardList from "../../components/UserCardList.vue";
 
 // const mockUser = ref({
 //   id: 5,

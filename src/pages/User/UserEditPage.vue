@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import myAxios from "../plugins/myAxios";
+import myAxios from "../../plugins/myAxios";
 import { showSuccessToast } from "vant";
 
 const route = useRoute();

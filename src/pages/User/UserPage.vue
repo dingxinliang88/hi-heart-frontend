@@ -60,12 +60,12 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import myAxios from "../plugins/myAxios";
+import myAxios from "../../plugins/myAxios";
 import { ref } from "vue";
 
-import type { UserVO } from "../models/user";
+import type { UserVO } from "../../models/user";
 import { showConfirmDialog, showFailToast, showSuccessToast } from "vant";
-import { getLoginUser } from "../service/user";
+import { getLoginUser } from "../../service/user";
 
 const user = ref<UserVO>({
   id: 0,
