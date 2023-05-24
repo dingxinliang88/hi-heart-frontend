@@ -21,6 +21,7 @@
       </template>
     </van-card>
   </template>
+  <van-empty v-if="!userList || !userList.length" description="结果为空" />
 </template>
 
 <script setup lang="ts">

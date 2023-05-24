@@ -17,7 +17,6 @@ const router = VueRouter.createRouter({
   routes, // short for `routes: routes`
 });
 
-
 app.use(router);
 
 app.mount("#app");

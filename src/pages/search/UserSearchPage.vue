@@ -46,8 +46,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-// import myAxios from "../plugins/myAxios";
-// import { onMounted } from "vue";
+import myAxios from "../../plugins/myAxios";
+import { onMounted } from "vue";
 
 /**
  * 搜索过滤标签
@@ -95,66 +95,66 @@ const searchText = ref("");
 const activeIds = ref([]);
 const activeIndex = ref(0);
 
-// let tagVOListFromBackend = [
-//   {
-//     parentTagName: "",
-//     childTagNameList: [],
-//   },
-// ];
-
-// let originTagList: any[] = [];
-
-// /**
-//  * 加载标签列表
-//  */
-// const loadTagList = async () => {
-//   const res = await myAxios.get("/tag/tag_list");
-//   tagVOListFromBackend = res.data;
-//   console.log(tagVOListFromBackend);
-
-//   originTagList = tagVOListFromBackend.map((item) => {
-//     const parentTag = item.parentTagName;
-//     const childrenTags = item.childTagNameList.slice(1).map((child, _) => ({
-//       text: child,
-//       id: child,
-//     }));
-//     return {
-//       text: parentTag,
-//       children: childrenTags,
-//     };
-//   });
-
-//   tagList.value = originTagList;
-// };
-
-// onMounted(async () => {
-//   loadTagList();
-// });
-
-const originTagList = [
+let tagVOListFromBackend = [
   {
-    text: "学习目标",
-    children: [
-      { text: "Java", id: "Java" },
-      { text: "C++", id: "C++" },
-      { text: "Python", id: "Python" },
-    ],
-  },
-  {
-    text: "目标",
-    children: [
-      { text: "考研", id: "考研" },
-      { text: "工作", id: "工作" },
-    ],
-  },
-  {
-    text: "个人状态",
-    children: [
-      { text: "活泼", id: "活泼" },
-      { text: "悠闲自在", id: "悠闲自在" },
-    ],
+    parentTagName: "",
+    childTagNameList: [],
   },
 ];
+
+let originTagList: any[] = [];
+
+/**
+ * 加载标签列表
+ */
+const loadTagList = async () => {
+  const res = await myAxios.get("/tag/tag_list");
+  tagVOListFromBackend = res.data;
+  console.log(tagVOListFromBackend);
+
+  originTagList = tagVOListFromBackend.map((item) => {
+    const parentTag = item.parentTagName;
+    const childrenTags = item.childTagNameList.slice(1).map((child, _) => ({
+      text: child,
+      id: child,
+    }));
+    return {
+      text: parentTag,
+      children: childrenTags,
+    };
+  });
+
+  tagList.value = originTagList;
+};
+
+onMounted(async () => {
+  loadTagList();
+});
+
+// const originTagList = [
+//   {
+//     text: "学习目标",
+//     children: [
+//       { text: "Java", id: "Java" },
+//       { text: "C++", id: "C++" },
+//       { text: "Python", id: "Python" },
+//     ],
+//   },
+//   {
+//     text: "目标",
+//     children: [
+//       { text: "考研", id: "考研" },
+//       { text: "工作", id: "工作" },
+//     ],
+//   },
+//   {
+//     text: "个人状态",
+//     children: [
+//       { text: "活泼", id: "活泼" },
+//       { text: "悠闲自在", id: "悠闲自在" },
+//     ],
+//   },
+// ];
 
 let tagList = ref(originTagList);
 </script>
