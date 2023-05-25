@@ -25,11 +25,20 @@
     <van-tag type="success">找寻属于自己的标签</van-tag>
   </van-cell>
 
-  <van-divider dashed>占个坑位</van-divider>
+  <van-divider dashed>我的标签</van-divider>
+  <template v-for="tag in loginUser.tags">
+    <van-tag type="primary" size="large" round>
+      <van-icon name="star" class="tag-icon"></van-icon>
+      {{ tag }}
+    </van-tag>
+  </template>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { UserVO } from "../../models/user";
+import { getLoginUser } from "../../service/user";
 
 const router = useRouter();
 
@@ -40,11 +49,23 @@ const doCreateTeam = () => {
 const doSelectMyTags = () => {
   router.push("/tag/select");
 };
+
+const loginUser = ref({} as UserVO);
+onMounted(async () => {
+  const res = await getLoginUser();
+  res.tags = JSON.parse(res.tags);
+  loginUser.value = res;
+});
 </script>
 
 <style scoped>
 .notice-swipe {
   height: 40px;
   line-height: 40px;
+}
+
+.tag-icon {
+  font-size: 20px;
+  margin-right: 6px;
 }
 </style>

@@ -14,7 +14,7 @@ import UserCardList from "../components/UserCardList.vue";
 
 const userList = ref([] as UserVO[]);
 onMounted(async () => {
-  const res = await myAxios.get("/user/recommend", {
+  const res = await myAxios.get("/user/list/page", {
     params: {
       pageNum: 1,
       pageSize: 10,
