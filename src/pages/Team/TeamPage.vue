@@ -35,9 +35,22 @@ import { TeamType } from "../../models/team";
 import { onMounted, ref } from "vue";
 import myAxios from "../../plugins/myAxios";
 import TeamCardList from "../../components/TeamCardList.vue";
+import emitter from "../../plugins/mitt";
 
 const teamList = ref([] as TeamType[]);
 
+/**
+ * 刷新数据
+ */
+emitter.on("update-team-list", (flag: boolean) => {
+  if (flag) {
+    initData();
+  }
+});
+
+/**
+ * 初始化数据
+ */
 const initData = async () => {
   const res = await myAxios.get("/team/list", {
     params: {
@@ -86,4 +99,8 @@ const doSearchResult = async () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#teampage {
+  padding-bottom: 50px;
+}
+</style>

@@ -50,8 +50,8 @@ onMounted(async () => {
         user.tags = JSON.parse(user.tags);
       }
     });
+    userList.value = res.data;
   }
-  userList.value = res.data;
 });
 </script>
 

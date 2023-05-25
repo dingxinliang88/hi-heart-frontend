@@ -13,12 +13,31 @@
     </van-swipe>
   </van-notice-bar>
 
+  <van-divider dashed>找寻心语</van-divider>
+
   <van-cell title="搜索用户" icon="user-o" is-link @click="doSearchUser">
-    <van-tag type="success">找寻你的好伙伴</van-tag>
+    <van-tag type="primary">找寻你的好伙伴</van-tag>
   </van-cell>
 
   <van-cell title="搜索队伍" icon="friends-o" is-link @click="doSearchTeam">
     <van-tag type="primary">找寻你的好群体</van-tag>
+  </van-cell>
+
+  <van-divider dashed>关于我的</van-divider>
+
+  <van-cell title="获取我的" icon="search" is-link @click="doSearchMyJoinTeam">
+    <van-tag type="success">我加入的队伍</van-tag>
+  </van-cell>
+  <van-cell title="获取我的" icon="search" is-link @click="doSearchMyLeadTeam">
+    <van-tag type="success">我领导的队伍</van-tag>
+  </van-cell>
+  <van-cell
+    title="获取我的"
+    icon="search"
+    is-link
+    @click="doSearchMyCreateTeam"
+  >
+    <van-tag type="success">我创建的队伍</van-tag>
   </van-cell>
 
   <van-divider dashed>占个坑位</van-divider>
@@ -27,6 +46,7 @@
 <script setup lang="ts">
 import { showFailToast } from "vant";
 import { useRouter } from "vue-router";
+import { LIST_TEAM_TYPE } from "../../models/common";
 
 const router = useRouter();
 
@@ -36,6 +56,32 @@ const doSearchUser = () => {
 
 const doSearchTeam = () => {
   showFailToast("暂时移动到队伍页了哦～");
+};
+
+const doSearchMyJoinTeam = () => {
+  router.push({
+    path: "/search/my/team",
+    query: {
+      type: LIST_TEAM_TYPE.JOIN,
+    },
+  });
+};
+const doSearchMyLeadTeam = () => {
+  router.push({
+    path: "/search/my/team",
+    query: {
+      type: LIST_TEAM_TYPE.LEAD,
+    },
+  });
+};
+
+const doSearchMyCreateTeam = () => {
+  router.push({
+    path: "/search/my/team",
+    query: {
+      type: LIST_TEAM_TYPE.CREATE,
+    },
+  });
 };
 </script>
 

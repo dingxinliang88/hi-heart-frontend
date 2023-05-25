@@ -1,10 +1,13 @@
 <template>
   <template v-for="user in userList">
-    <van-card
-      :desc="user.userProfile"
-      :title="user.userName"
-      :thumb="user.userAvatar"
-    >
+    <van-card :title="user.userName" :thumb="user.userAvatar">
+      <template #desc>
+        <van-text-ellipsis
+          :content="user.userProfile"
+          expand-text="展开"
+          collapse-text="收起"
+        />
+      </template>
       <template #tags>
         <van-tag
           plain

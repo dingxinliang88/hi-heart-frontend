@@ -4,7 +4,7 @@ import { UserVO } from "./user";
  * 队伍类别
  */
 export type TeamType = {
-  id: number;
+  teamId: number;
   teamName: string;
   description: string;
   maxNum: number;
@@ -15,5 +15,16 @@ export type TeamType = {
   leaderId: number;
   createTime: Date;
   leader: UserVO;
-  joinNum?: number;
+  joinNum: number;
+  hasJoin: boolean;
+};
+
+export type Team = {
+  id: number;
+  teamName: string;
+  description: string;
+  maxNum: number;
+  teamPassword?: string;
+  teamAvatar: string;
+  status: number;
 };

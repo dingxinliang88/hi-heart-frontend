@@ -41,7 +41,7 @@
         </template>
       </van-field>
       <van-field
-        v-if="Number(teamCreateData.status) == 2"
+        v-if="Number(status) == 2"
         v-model="teamCreateData.teamPassword"
         type="password"
         name="加入队伍密码"
