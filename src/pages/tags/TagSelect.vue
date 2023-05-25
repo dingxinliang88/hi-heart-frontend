@@ -39,7 +39,7 @@
   />
 
   <div style="padding: 16px">
-    <van-button block type="primary" @click="doSearchResult">搜索</van-button>
+    <van-button block type="primary" @click="doSearchResult">选好了</van-button>
   </div>
 </template>
 
@@ -48,6 +48,9 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import myAxios from "../../plugins/myAxios";
 import { onMounted } from "vue";
+import { showFailToast, showSuccessToast } from "vant";
+import { UserVO } from "../../models/user";
+import { getLoginUser } from "../../service/user";
 
 /**
  * 搜索过滤标签
@@ -81,13 +84,24 @@ const doClose = (tag: string) => {
 
 const router = useRouter();
 
-const doSearchResult = () => {
-  router.push({
-    path: "/user/list",
-    query: {
-      tags: activeIds.value,
-    },
-  });
+const loginUser = ref({} as UserVO);
+onMounted(async () => {
+  loginUser.value = await getLoginUser();
+});
+
+const doSearchResult = async () => {
+  const tagData = {
+    id: loginUser.value.id,
+    tagList: activeIds.value,
+  };
+  console.log(activeIds.value);
+  const res = await myAxios.put("/user/update", tagData);
+  if (res.data) {
+    showSuccessToast("更新成功");
+    router.push("/");
+  } else {
+    showFailToast(res.message);
+  }
 };
 
 const searchText = ref("");
@@ -103,6 +117,7 @@ let tagVOListFromBackend = [
 ];
 
 let originTagList: any[] = [];
+const tagList = ref(originTagList);
 
 /**
  * 加载标签列表
@@ -130,33 +145,6 @@ const loadTagList = async () => {
 onMounted(async () => {
   loadTagList();
 });
-
-// const originTagList = [
-//   {
-//     text: "学习目标",
-//     children: [
-//       { text: "Java", id: "Java" },
-//       { text: "C++", id: "C++" },
-//       { text: "Python", id: "Python" },
-//     ],
-//   },
-//   {
-//     text: "目标",
-//     children: [
-//       { text: "考研", id: "考研" },
-//       { text: "工作", id: "工作" },
-//     ],
-//   },
-//   {
-//     text: "个人状态",
-//     children: [
-//       { text: "活泼", id: "活泼" },
-//       { text: "悠闲自在", id: "悠闲自在" },
-//     ],
-//   },
-// ];
-
-let tagList = ref(originTagList);
 </script>
 
 <style scoped></style>

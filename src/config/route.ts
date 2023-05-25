@@ -12,6 +12,8 @@ import SearchMyTeamPage from "../pages/search/SearchMyTeamPage.vue";
 import UserEditPage from "../pages/User/UserEditPage.vue";
 import UserResultPage from "../pages/User/UserResultPage.vue";
 import UserLoginPage from "../pages/User/UserLoginPage.vue";
+import OptionsIndexVue from "../pages/options/OptionsIndex.vue";
+import TagSelect from "../pages/tags/TagSelect.vue";
 
 const routes = [
   { path: "/", name: "主页", component: Index },
@@ -31,6 +33,8 @@ const routes = [
   { path: "/user/edit", name: "用户编辑页", component: UserEditPage },
   { path: "/user/list", name: "UserResult", component: UserResultPage },
   { path: "/login", name: "login", component: UserLoginPage },
+  { path: "/opt", name: "寻心", component: OptionsIndexVue },
+  { path: "/tag/select", name: "标签选择", component: TagSelect },
 ];
 
 export default routes; //导出
