@@ -12,6 +12,9 @@
   <van-cell title="探索" icon="search" is-link @click="doSelectMyTags">
     <van-tag type="success">找寻属于自己的标签</van-tag>
   </van-cell>
+  <van-cell title="创造" icon="plus" is-link @click="doAddTags">
+    <van-tag type="success">创建不同个性的标签</van-tag>
+  </van-cell>
 
   <van-divider dashed>找寻心语</van-divider>
   <van-cell title="创建队伍" icon="friends-o" is-link @click="doCreateTeam">
@@ -35,6 +38,10 @@ const doSelectMyTags = () => {
   router.push("/tag/select");
 };
 
+const doAddTags = () => {
+  router.push("/tag/add");
+};
+
 const loginUser = ref({} as UserVO);
 onMounted(async () => {
   const res = await getLoginUser();
@@ -44,11 +51,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.notice-swipe {
-  height: 40px;
-  line-height: 40px;
-}
-
 .fancy-tag {
   background-color: #ffefd5;
   color: #ff4500;
