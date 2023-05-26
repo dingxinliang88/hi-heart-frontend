@@ -24,15 +24,23 @@
         placeholder="密码"
         :rules="[{ required: true, message: '请填写密码' }]"
       />
+      <van-field
+        v-model="checkedPassword"
+        type="password"
+        name="密码"
+        label="再次输入密码"
+        placeholder="请再次填写密码"
+        :rules="[{ required: true, message: '请填写密码' }]"
+      />
     </van-cell-group>
     <div style="margin: 16px">
       <van-button round block type="primary" native-type="submit">
-        登录
+        注册
       </van-button>
     </div>
     <br />
-    <span @click="doRegister" style="color: #160cce" class="float-right"
-      >还没有账号？注册一个</span
+    <span @click="doLogin" style="color: #160cce" class="float-right"
+      >已经有账号了？去登录</span
     >
   </van-form>
 </template>
@@ -47,22 +55,24 @@ const router = useRouter();
 
 const userAccount = ref("");
 const userPassword = ref("");
+const checkedPassword = ref("");
 const onSubmit = async () => {
-  const res = await myAxios.post("/user/login", {
+  const res = await myAxios.post("/user/register", {
     userAccount: userAccount.value,
     userPassword: userPassword.value,
+    checkedPassword: checkedPassword.value,
   });
   if (res.code === 0 && res.data) {
-    showSuccessToast("登录成功");
-    router.push("/");
+    showSuccessToast("注册成功");
+    router.push("/login");
   } else {
-    showFailToast("登录失败");
+    showFailToast(res.message);
   }
 };
 
-const doRegister = () => {
+const doLogin = () => {
   router.push({
-    path: "/register",
+    path: "/login",
     replace: true,
   });
 };

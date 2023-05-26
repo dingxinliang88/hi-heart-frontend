@@ -1,5 +1,10 @@
 <template>
-  <van-cell title="搜索你想要的队伍" is-link icon="search" @click="showPopup" />
+  <van-cell
+    title="搜索你想要的队伍"
+    is-link
+    icon="search"
+    @click="show = true"
+  />
   <van-popup v-model:show="show" position="bottom" :style="{ height: '30%' }">
     <form action="/">
       <van-search
@@ -35,18 +40,10 @@ import { TeamType } from "../../models/team";
 import { onMounted, ref } from "vue";
 import myAxios from "../../plugins/myAxios";
 import TeamCardList from "../../components/TeamCardList.vue";
-import emitter from "../../plugins/mitt";
+import { watchEffect } from "vue";
+import { showFailToast } from "vant";
 
 const teamList = ref([] as TeamType[]);
-
-/**
- * 刷新数据
- */
-emitter.on("update-team-list", (flag: boolean) => {
-  if (flag) {
-    initData();
-  }
-});
 
 /**
  * 初始化数据
@@ -60,6 +57,8 @@ const initData = async () => {
   });
   if (res.code === 0 && res.data) {
     teamList.value = res.data.records;
+  } else {
+    showFailToast(res.message);
   }
 };
 
@@ -67,10 +66,11 @@ onMounted(() => {
   initData();
 });
 
+watchEffect(() => {
+  initData();
+});
+
 const show = ref(false);
-const showPopup = () => {
-  show.value = true;
-};
 const searchText = ref("");
 const status = ref("0");
 
@@ -82,6 +82,9 @@ const onCancel = () => {
   show.value = false;
 };
 
+/**
+ * 搜索队伍
+ */
 const doSearchResult = async () => {
   const searchData = {
     searchText: searchText.value,

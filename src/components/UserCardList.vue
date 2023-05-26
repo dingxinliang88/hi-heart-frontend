@@ -1,6 +1,16 @@
 <template>
-  <template v-for="user in userList">
-    <van-card :title="user.userName" :thumb="user.userAvatar">
+  <van-skeleton
+    title
+    avatar
+    :row="3"
+    :loading="props.loading"
+    v-for="user in props.userList"
+  >
+    <van-card
+      :title="user.userName"
+      :thumb="user.userAvatar"
+      :tag="user.id.toString()"
+    >
       <template #desc>
         <van-text-ellipsis
           :content="user.userProfile"
@@ -19,11 +29,11 @@
         </van-tag>
       </template>
       <template #footer>
-        <van-button round size="small" type="danger">举报</van-button>
         <van-button round size="small" type="primary">联系我</van-button>
       </template>
     </van-card>
-  </template>
+  </van-skeleton>
+
   <van-empty v-if="!userList || !userList.length" description="结果为空" />
 </template>
 
@@ -32,11 +42,13 @@ import { UserVO } from "../models/user";
 
 interface userCardListProps {
   userList: UserVO[];
+  loading: boolean;
 }
 
 const props = withDefaults(defineProps<userCardListProps>(), {
   //@ts-ignore
   userList: [] as UserVO[],
+  loading: true,
 });
 </script>
 

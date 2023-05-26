@@ -1,59 +1,64 @@
 <template>
-  <van-cell
-    title="昵称"
-    is-link
-    to="/user/edit"
-    :value="user.userName"
-    @click="toEdit('userName', user.userName, '昵称')"
-  />
-  <van-cell title="账号" :value="user.userAccount" />
-  <van-cell
-    title="头像"
-    is-link
-    to="/user/edit"
-    @click="toEdit('userAvatar', user.userAvatar, '头像')"
-  >
-    <img style="height: 48px" :src="user.userAvatar" />
-  </van-cell>
-  <van-cell
-    title="性别"
-    is-link
-    to="/user/edit"
-    :value="user.gender == 1 ? '男' : '女'"
-    @click="toEdit('gender', user.gender, '性别')"
-  />
-  <van-cell
-    title="简介"
-    is-link
-    to="/user/edit"
-    :value="user.userProfile"
-    @click="toEdit('userProfile', user.userProfile, '简介')"
-  />
-  <van-cell
-    title="电话"
-    is-link
-    to="/user/edit"
-    :value="user.phone"
-    @click="toEdit('phone', user.phone, '电话')"
-  />
-  <van-cell
-    title="邮箱"
-    is-link
-    to="/user/edit"
-    :value="user.email"
-    @click="toEdit('email', user.email, '邮箱')"
-  />
-  <van-cell title="注册时间" :value="parseDate(user.createTime)" />
-  <van-cell title="更多操作" @click="show = true" is-link icon="more-o" />
-
-  <div>
-    <van-action-sheet
-      v-model:show="show"
-      :actions="actions"
-      cancel-text="取消"
-      close-on-click-action
-      @select="onSelect"
+  <div id="userpage">
+    <van-image
+      style="margin-left: 25%; margin-bottom: 5px; margin-top: 8px"
+      round
+      width="8rem"
+      height="8rem"
+      :src="user.userAvatar"
+      @click="doUpdateAvatar"
     />
+    <van-cell
+      title="昵称"
+      is-link
+      to="/user/edit"
+      :value="user.userName"
+      @click="toEdit('userName', user.userName, '昵称')"
+    />
+    <van-cell title="账号" :value="user.userAccount" />
+    <van-cell
+      title="性别"
+      is-link
+      to="/user/edit"
+      :value="user.gender == 1 ? '男' : '女'"
+      @click="toEdit('gender', user.gender, '性别')"
+    />
+    <van-cell
+      title="简介"
+      is-link
+      to="/user/edit"
+      @click="toEdit('userProfile', user.userProfile, '简介')"
+    >
+      <template #value>
+        <van-text-ellipsis rows="2" :content="user.userProfile" />
+      </template>
+    </van-cell>
+    <van-cell
+      title="电话"
+      is-link
+      to="/user/edit"
+      :value="user.phone"
+      @click="toEdit('phone', user.phone, '电话')"
+    />
+    <van-cell
+      title="邮箱"
+      is-link
+      to="/user/edit"
+      :value="user.email"
+      @click="toEdit('email', user.email, '邮箱')"
+    />
+    <van-cell title="注册时间" :value="parseDate(user.createTime)" />
+    <van-cell title="更多操作" @click="show = true" is-link icon="more-o" />
+
+    <div>
+      <van-action-sheet
+        v-model:show="show"
+        :actions="actions"
+        cancel-text="取消"
+        close-on-click-action
+        @select="onSelect"
+      />
+    </div>
   </div>
 </template>
 
@@ -87,6 +92,10 @@ onMounted(async () => {
   }
   user.value = res;
 });
+
+const doUpdateAvatar = () => {
+  toEdit("userAvatar", user.value.userAvatar, "头像");
+};
 
 const router = useRouter();
 
@@ -149,4 +158,8 @@ const toEdit = (editKey: string, curVal: any, editName: string) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#userpage {
+  padding-bottom: 50px;
+}
+</style>

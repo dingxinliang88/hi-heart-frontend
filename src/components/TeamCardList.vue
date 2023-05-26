@@ -1,5 +1,5 @@
 <template>
-  <template v-for="team in teamList">
+  <template v-for="team in props.teamList">
     <van-card
       :tag="team.teamId.toString()"
       :desc="team.description"
@@ -51,6 +51,13 @@
         <van-button
           round
           size="small"
+          type="primary"
+          @click="doShowTeam(team.teamId)"
+          >查看</van-button
+        >
+        <van-button
+          round
+          size="small"
           type="warning"
           @click="doEditTeam(team.teamId)"
           v-if="team.leaderId === loginUser.id"
@@ -91,6 +98,7 @@
       </template>
     </van-card>
   </template>
+
   <van-empty v-if="!teamList || !teamList.length" description="结果为空" />
 
   <van-dialog
@@ -129,7 +137,7 @@ interface teamCardListProps {
   teamList: TeamType[];
 }
 
-withDefaults(defineProps<teamCardListProps>(), {
+const props = withDefaults(defineProps<teamCardListProps>(), {
   //@ts-ignore
   teamList: [] as TeamType[],
 });
@@ -157,7 +165,6 @@ const teamPassword = ref("");
 const joinTeamId = ref(1);
 const doJoinTeam = (team: TeamType) => {
   show.value = true;
-  // todo 显示弹出层，输入密码，还是直接加入
   if (team.status === 2) {
     showPassword.value = true;
   }
@@ -235,9 +242,22 @@ const doDeleteTeam = (teamId: number) => {
     });
 };
 
+/**
+ * 转让队伍
+ * @param teamId 队伍id
+ */
 const doTransferTeam = (teamId: number) => {
   router.push({
     path: "/team/transfer",
+    query: {
+      teamId,
+    },
+  });
+};
+
+const doShowTeam = (teamId: number) => {
+  router.push({
+    path: "/team/join",
     query: {
       teamId,
     },

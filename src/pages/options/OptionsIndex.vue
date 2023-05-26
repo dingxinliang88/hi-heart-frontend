@@ -1,37 +1,22 @@
 <template>
-  <van-notice-bar left-icon="volume-o" :scrollable="false" mode="closeable">
-    <van-swipe
-      vertical
-      class="notice-swipe"
-      :autoplay="3000"
-      :touchable="false"
-      :show-indicators="false"
-    >
-      <van-swipe-item>明月直入，无心可猜。</van-swipe-item>
-      <van-swipe-item>仙人抚我顶，结发受长生。</van-swipe-item>
-      <van-swipe-item>今人不见古时月，今月曾经照古人。</van-swipe-item>
-    </van-swipe>
-  </van-notice-bar>
-
-  <van-divider dashed>找寻心语</van-divider>
-
-  <van-cell title="创建队伍" icon="friends-o" is-link @click="doCreateTeam">
-    <van-tag type="primary">创建属于你的好群体</van-tag>
-  </van-cell>
-
-  <van-divider dashed>打造自己</van-divider>
-
-  <van-cell title="探索" icon="search" is-link @click="doSelectMyTags">
-    <van-tag type="success">找寻属于自己的标签</van-tag>
-  </van-cell>
-
   <van-divider dashed>我的标签</van-divider>
+  <van-empty :image-size="[60, 40]" v-if="!loginUser.tags" />
   <template v-for="tag in loginUser.tags">
-    <van-tag type="primary" size="large" round>
+    <van-tag type="primary" size="large" round class="fancy-tag">
       <van-icon name="star" class="tag-icon"></van-icon>
       {{ tag }}
     </van-tag>
   </template>
+
+  <van-divider dashed>打造自己</van-divider>
+  <van-cell title="探索" icon="search" is-link @click="doSelectMyTags">
+    <van-tag type="success">找寻属于自己的标签</van-tag>
+  </van-cell>
+
+  <van-divider dashed>找寻心语</van-divider>
+  <van-cell title="创建队伍" icon="friends-o" is-link @click="doCreateTeam">
+    <van-tag type="primary">创建属于你的好群体</van-tag>
+  </van-cell>
 </template>
 
 <script setup lang="ts">
@@ -62,6 +47,18 @@ onMounted(async () => {
 .notice-swipe {
   height: 40px;
   line-height: 40px;
+}
+
+.fancy-tag {
+  background-color: #ffefd5;
+  color: #ff4500;
+  border: solid #ffdab9;
+  border-width: 2px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  margin: 6px;
+  padding: 8px 10px;
+  text-shadow: 1px 1px 1px rgba(255, 69, 0, 0.3);
 }
 
 .tag-icon {
